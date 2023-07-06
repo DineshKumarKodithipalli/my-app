@@ -15,7 +15,9 @@ import {
     TextField,
     TextareaAutosize,
     Card,
-    CardMedia
+    CardMedia,
+    Select,
+     MenuItem
 } from '@material-ui/core';
 
 interface Dog {
@@ -93,12 +95,17 @@ const SearchPage: React.FC = () => {
     const [prev, setPrev] = useState('');
     const [selectedDogIds, setSelectedDogIds] = useState<string[]>([]);
     const [location, setLocation] = useState<Location | null>(null);
+    const [sortOption, setSortOption] = useState<string>('asc');
     const classes = useStyles();
     useEffect(() => {
         fetchBreeds();
         handleSearch();
     }, []);
 
+    const handleSortChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setSortOption(event.target.value as string);
+      };
+    
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, dogId: string) => {
         const { checked } = event.target;
 
@@ -143,7 +150,8 @@ const SearchPage: React.FC = () => {
             if (maxAge !== '') {
                 queryParams.ageMax = maxAge;
             }
-            const response = await apiInstance.get('/dogs/search', {
+            console.log('/dogs/search?sort=breed:'+sortOption)
+            const response = await apiInstance.get('/dogs/search?sort=breed:'+sortOption, {
                 params: queryParams,
             }
             );
@@ -263,7 +271,7 @@ const SearchPage: React.FC = () => {
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel>Zip Code</InputLabel>
-                <TextareaAutosize
+                <TextareaAutosize style={{ backgroundColor: 'papayawhip' }}
                     rowsMin={3}
                     value={zipCodes.join('\n')}
                     onChange={handleZipCodesChange}
@@ -277,6 +285,22 @@ const SearchPage: React.FC = () => {
                     onChange={(e) => setMinAge(e.target.value)}
                 />
             </FormControl>
+            <FormControl className={classes.formControl}>
+                <TextField
+                    label="Max Age"
+                    type="text"
+                    value={maxAge}
+                    onChange={(e) => setMaxAge(e.target.value)}
+                />
+            </FormControl>
+            <Select
+                value={sortOption}
+                onChange={handleSortChange}
+            >
+                <MenuItem value="asc">Ascending</MenuItem>
+                <MenuItem value="desc">Descending</MenuItem>
+                
+            </Select>
             <Button variant="contained" color="primary" onClick={handleSearch}>
                 Search
             </Button>

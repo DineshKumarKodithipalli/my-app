@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Typography, TextField, Button, Container } from '@material-ui/core';
+import { Typography, TextField, Button, Container, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import DogImage from '../Fetch.png'
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     form: {
         width: '100%',
         marginTop: theme.spacing(1),
+        
     },
     submitButton: {
         margin: theme.spacing(3, 0, 2),
@@ -70,6 +71,7 @@ const Login: React.FC = () => {
                 <Typography style={{ color: '#7d1f70' }} component="h1" variant="h4">
                     FETCH YOUR DOG!!
                 </Typography>
+                <Divider  style={{width: '400px'}}/>
                 <Typography style={{ color: '#7d1f70' }} component="h1" variant="h5">
                     Login
                 </Typography>
